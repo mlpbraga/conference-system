@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: .
+    image: conference/api
+    container_name: conference_api
+    volumes:
+      - .:/usr/src/app/
+    ports:
+      - 3004:3004
+    command: yarn dev:start # dev:start for development | start for production
+    environment:
+      NODE_ENV: ${NODE_ENV}
+    depends_on:
+      - postgres
+    networks:
+      - backend
+  postgres:
+    image: postgres:12.2-alpine
+    container_name: conference_postgres
+    ports:
+      - 5432:5432
+    command: postgres -c idle_in_transaction_session_timeout='1min'
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
