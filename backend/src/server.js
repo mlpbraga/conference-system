@@ -21,7 +21,7 @@ app.use('/', async (req, res) => {
   const filePath = `${__dirname}/operationalnumber`;
   const operatioNalnumber = await fs.readFileSync(filePath, {encoding:'utf8', flag:'r'});
   await fs.writeFileSync(filePath, `${parseInt(operatioNalnumber) + 1}`);
-  res.status(200).json({number: operatioNalnumber + 1});
+  res.status(200).json({number: parseInt(operatioNalnumber) + 1});
 });
 
 // error handlers
@@ -39,4 +39,4 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(3004, () => {console.log('🚀 Server started on port 3004!')});
+app.listen(3567, () => {console.log('🚀 Server started on port 3567!')});
